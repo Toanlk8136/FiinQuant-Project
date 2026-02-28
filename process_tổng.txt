@@ -1,0 +1,102 @@
+📌 PROMPT: KIẾN TRÚC DASHBOARD DATA (STATIC CACHE MODEL)
+
+Tôi đang xây một dashboard tài chính cá nhân theo kiến trúc sau.
+Hãy đọc kỹ và làm đúng theo flow này, không đề xuất mô hình khác.
+
+🎯 Mục tiêu
+
+Data xử lý bằng Python + FiinQuant
+
+Lưu trữ trung gian bằng Google Sheet
+
+Frontend là HTML + JavaScript (Chart.js)
+
+Không dùng runtime API fetch từ Google Sheet khi user mở web
+
+Phải dùng mô hình static cache (giống GitHub Pages dashboard)
+
+🧱 Kiến trúc hệ thống
+1️⃣ Data Engine (Backend)
+
+Python chạy trong PyCharm
+
+Call FiinQuant API
+
+Xử lý dữ liệu (liquidity, contribution, breadth, regime…)
+
+Đẩy dữ liệu lên Google Sheet
+
+Flow:
+FiinQuant → Python → Google Sheet
+
+2️⃣ Static Cache Layer (Quan trọng)
+
+Python phải:
+
+Đọc dữ liệu từ Google Sheet
+
+Convert sang JSON
+
+Xuất thành file tĩnh:
+
+data.js (kiểu: window.DATA = {...})
+hoặc
+
+data.json
+
+Ví dụ format mong muốn:
+
+window.BREADTH_HISTORY = {
+   asof: "2026-02-25",
+   series: [
+      { date: "2024-02-22", adv: 163, dec: 159 }
+   ]
+}
+
+File này sẽ được deploy cùng HTML.
+
+Flow:
+Google Sheet → Python → generate data.js
+
+3️⃣ Frontend Layer
+
+HTML + JS phải:
+
+Không fetch Google Sheet API
+
+Không dùng Apps Script runtime
+
+Chỉ load file data.js
+
+Dùng Chart.js để vẽ từ biến global window.DATA
+
+Flow:
+HTML → load data.js → JS đọc window.DATA → render chart
+
+🚀 Yêu cầu
+
+Khi trả lời:
+
+Không đề xuất chuyển sang backend server khác
+
+Không đề xuất Flask / FastAPI
+
+Không đề xuất database riêng
+
+Giữ nguyên Google Sheet làm nguồn dữ liệu
+
+Chỉ tối ưu theo mô hình static cache
+
+📌 Mục tiêu cuối
+
+Tôi muốn:
+
+Dashboard load nhanh
+
+Không phụ thuộc runtime API
+
+Có thể deploy lên GitHub Pages / Cloudflare Pages
+
+Dễ scale sau này
+
+Hãy viết code hoặc giải pháp theo đúng kiến trúc trên.
